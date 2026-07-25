@@ -73,14 +73,36 @@ void print(intt num){
     cout<<result;
 }
 
-intt read(){
-    string s;
-    cin>>s;
-    intt num=0;
-    for(char c:s)
-      num=num*10+(c-'0');
-    return num;
+// intt read(){
+//     string s;
+//     cin>>s;
+//     intt num=0;
+//     for(char c:s)
+//       num=num*10+(c-'0');
+//     return num;
+// }
+
+vector<intt> encp(string msg, intt e, intt n){
+    vector<intt> cipher;
+    for(char c:msg){
+        intt x=(intt)c;
+        intt y=modPow(x,e,n);
+        cipher.push_back(y);
+    }
+    return cipher;
 }
+
+string decp(vector<intt> en, intt d, intt n){
+    string str="";
+    for(int i=0;i<en.size();i++)
+      {
+          intt x=modPow(en[i],d,n);
+          char ch=(char)x;
+          str+=ch;
+      }
+      return str;
+}
+
 int main(){
     intt p=3731292319LL;
     intt q=3492564827LL;
@@ -111,13 +133,16 @@ int main(){
     }
 
     cout<<endl<<"Enter message: ";
-    intt message=read();
+    string msg;
+    cin>>msg;
     cout<<endl<<"Encrypted message: ";
-    intt en=modPow(message,e,n);
-    print(en);
-    intt dc=modPow(en,firstD,n);
+    vector<intt>en=encp(msg,e,n);
+    for(int i=0;i<en.size();i++)
+          print(en[i]);
+
+    string dc=decp(en,firstD,n);
     cout<<endl<<"Decrypted message: ";
-    print(dc);
+    cout<<dc<<endl;
 
     return 0;
 }
